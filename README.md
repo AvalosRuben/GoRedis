@@ -1,0 +1,3 @@
+# Go Redis
+
+Redis clone on **go**lang, currently on development...
