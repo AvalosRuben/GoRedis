@@ -31,6 +31,23 @@ func NewResp(rd io.Reader) *Resp{
 	return &Resp{reader: bufio.NewReader(rd)}
 }
 
+func (v Value) Marshal() []byte {
+	switch v.typ {
+	case "array":
+		return v.marshalArray()
+	case "bulk":
+		return v.marshalBulk()
+	case "string":
+		return v.marshalString()
+	case "null":
+		return v.marshallNull()
+	case "error":
+		return v.marshallError()
+	default:
+		return []byte{}
+	}
+}
+
 func (r *Resp) readLine() (line []byte, n int, err error) {
 	for {
 		b, err := r.reader.ReadByte()
