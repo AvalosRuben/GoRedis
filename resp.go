@@ -90,6 +90,10 @@ func (v Value) marshallError() []byte {
 	return bytes
 }
 
+func (v Value) marshallNull() []byte{
+	return []byte("$-1\r\n")
+}
+
 func (r *Resp) readLine() (line []byte, n int, err error) {
 	for {
 		b, err := r.reader.ReadByte()
