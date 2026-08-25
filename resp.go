@@ -31,6 +31,14 @@ func NewResp(rd io.Reader) *Resp{
 	return &Resp{reader: bufio.NewReader(rd)}
 }
 
+type Writer struct {
+	writer io.Writer
+}
+
+func NewWriter(w io.Writer) *Writer {
+	return &Writer{writer: w}
+}
+
 func (v Value) Marshal() []byte {
 	switch v.typ {
 	case "array":
