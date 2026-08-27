@@ -2,7 +2,10 @@ package main
 
 //Create the command
 func ping(args []Value) Value{
-	return Value{typ: "string", str:"PONG"}
+	if len(args) == 0 {
+		return Value{typ: "string", str: "PONG"}
+	}
+	return Value{typ: "string", str: args[0].bulk}
 }
  //Add the command to the handler
 var Handlers = map[string]func([]Value) Value{
