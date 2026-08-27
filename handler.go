@@ -12,6 +12,8 @@ func ping(args []Value) Value{
  //Add the command to the handler
 var Handlers = map[string]func([]Value) Value{
 	"PING": ping,
+	"SET": set,
+	"GET": get,
 }
 
 var SETs = map[string]string{}
