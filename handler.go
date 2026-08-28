@@ -73,8 +73,8 @@ func hset(args []Value) Value{
 		HSETs[hash] = map[string]string{}
 	}
 
-	HSETs[key][value] = value
-	HSETsMu.Lock()
+	HSETs[hash][key] = value
+	HSETsMu.Unlock()
 
 	return Value{typ: "string", str: "OK"}
 }
