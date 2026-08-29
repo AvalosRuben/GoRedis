@@ -1,6 +1,8 @@
 package main
 
-import "sync"
+import (
+	"sync"
+)
 
 //Create the command
 func ping(args []Value) Value{
@@ -16,6 +18,7 @@ var Handlers = map[string]func([]Value) Value{
 	"GET": get,
 	"HSET": hset,
 	"HGET": hget,
+	"HGETALL": hgetall,
 }
 
 var SETs = map[string]string{}
@@ -96,4 +99,30 @@ func hget(args []Value) Value {
 	}
 
 	return Value{typ:"bulk", bulk: value}
+}
+
+func hgetall(args []Value) Value {
+	if len(args) != 1 {
+		return Value{typ:"error", str: "ERROR wrong number of arguments 'hgetall' command"}
+	}
+
+	hash := args[0].bulk
+
+	HSETsMu.RLock()
+	fields, ok := HSETs[hash]
+	if !ok {
+		HSETsMu.RUnlock()
+
+		return Value{typ: "array", array: []Value{}}
+	}
+
+	values := make([]Value, 0 , len(fields) *2)
+	for k, v := range fields {
+		values = append(values, Value{typ: "bulk", bulk: k})
+		values = append(values, Value{typ: "bulk", bulk: v})
+	}
+	HSETsMu.RUnlock()
+
+	return Value{typ: "array", array: values}
+
 }
