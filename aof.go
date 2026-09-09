@@ -35,3 +35,10 @@ func NewAof(path string) (*Aof, error) {
 
 	return aof, nil
 }
+
+func (aof *Aof) Close() error{
+	aof.mu.Lock()
+	defer aof.mu.Unlock()
+
+	return aof.file.Close()
+}
